@@ -90,13 +90,13 @@ Agent DaemonSet 정의 (모든 노드에 자동 배포)
 ### 4.1 개발환경
 - **kubectl**만 설치되어 있으면 테스트 가능
 
-# 4.2 빌드 & 배포 + 4.3 이미지 수동 배포 (Worker Node)
+### 4.2 빌드 & 배포 + 4.3 이미지 수동 배포 (Worker Node)
 
-# ── 1) 클러스터 배포 ───────────────────────────
+### ── 1) 클러스터 배포 ───────────────────────────
 chmod +x deploy
 ./deploy
 
-# ── 2) 워커 노드에 이미지 전송 + 가져오기 ──────
+### ── 2) 워커 노드에 이미지 전송 + 가져오기 ──────
 scp monitor.tar monitor-api.tar ubuntu@<worker-node>:/tmp/
 
 ssh ubuntu@<worker-node> << 'EOF'
