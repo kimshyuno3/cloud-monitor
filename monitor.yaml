@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: resource-monitor
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: resource-monitor
+  template:
+    metadata:
+      labels:
+        app: resource-monitor
+    spec:
+      hostPID: true
+      containers:
+      - name: monitor
+        image: monitor:latest
+        imagePullPolicy: IfNotPresent
+
+        env:
+        - name: CENTRAL_API_SERVER
+          value: "http://central-api-service.kube-system.svc.cluster.local:8082/api/ingest"  # ✅ 수정: API 서버 주소
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sysfs
+          mountPath: /host/sys/fs/cgroup
+          readOnly: true
+        - name: kubelet
+          mountPath: /host/var/lib/kubelet
+          readOnly: true
+        - name: containerd-sock
+          mountPath: /run/containerd/containerd.sock
+          readOnly: true
+        ports:
+        - containerPort: 8082
+          name: http
+      volumes:
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: sysfs
+        hostPath:
+          path: /sys/fs/cgroup
+      - name: kubelet
+        hostPath:
+          path: /var/lib/kubelet
+      - name: containerd-sock
+        hostPath:
+          path: /run/containerd/containerd.sock
+      restartPolicy: Always

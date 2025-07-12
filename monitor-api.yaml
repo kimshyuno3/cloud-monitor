@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: central-api-server
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: central-api-server
+  template:
+    metadata:
+      labels:
+        app: central-api-server
+    spec:
+      containers:
+      - name: api
+        image: monitor-api:latest  # ✅ 로컬에서 빌드한 이름
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8082
+        volumeMounts:
+        - name: data
+          mountPath: /app/data
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: central-api-service
+  namespace: kube-system
+spec:
+  selector:
+    app: central-api-server
+  ports:
+  - protocol: TCP
+    port: 8082
+    targetPort: 8082
+  type: ClusterIP
