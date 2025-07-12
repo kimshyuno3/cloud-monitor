@@ -30,21 +30,6 @@ Kubernetes 클러스터의 리소스를 DaemonSet으로 수집하고, 시계열(
 
 ![structure](https://github.com/user-attachments/assets/717e146e-7b89-4b7c-8551-78d160bfc54a)
 
-cloud-monitor/
-├─ agent/
-│ ├─ metadata_collector.py
-│ ├─ resource_collector.py
-│ └─ main.py
-├─ central_api_server/
-│ └─ main.py
-├─ k8s/
-│ ├─ monitor.yaml # DaemonSet
-│ └─ monitor-api.yaml # API Deployment + Service
-└─ deploy # 배포 스크립트
-
-markdown
-복사
-편집
 
 ---
 
